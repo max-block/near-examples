@@ -1,0 +1,4 @@
+build-contract:
+    cd contract && \
+        cargo build --target wasm32-unknown-unknown --release && \
+        cp target/wasm32-unknown-unknown/release/counter.wasm ./out/main.wasm
