@@ -1,4 +1,24 @@
+set positional-arguments
+
+contract := `cat contract/neardev/dev-account`
+
 build-contract:
-    cd contract && \
-        cargo build --target wasm32-unknown-unknown --release && \
-        cp target/wasm32-unknown-unknown/release/counter.wasm ./out/main.wasm
+    cd contract && cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/counter.wasm ./out/main.wasm
+
+deploy:
+    cd contract && near dev-deploy
+
+deploy-force:
+    cd contract && near dev-deploy --force
+
+get_value:
+    cd contract && near view {{contract}} get_value
+
+get_history:
+    cd contract && near view {{contract}} get_history
+
+inc param:
+    cd contract && near call {{contract}} action '{"operation": "add", "param": 3}' --accountId {{contract}}
+
+dec:
+    cd contract && near call {{contract}} dec --accountId {{contract}}

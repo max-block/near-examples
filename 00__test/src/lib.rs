@@ -3,8 +3,6 @@ use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::Vector;
 use near_sdk::serde::{Deserialize, Serialize};
 
-near_sdk::setup_alloc!();
-
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Contract {
@@ -18,6 +16,7 @@ impl Default for Contract {
     }
 }
 
+
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize, Debug, Default)]
 #[serde(crate = "near_sdk::serde")]
 pub struct Action {
@@ -26,43 +25,12 @@ pub struct Action {
     param: i128,
 }
 
-#[near_bindgen]
 impl Contract {
-    pub fn get_value(&self) -> i128 {
-        self.value
-    }
-
     pub fn get_history(&self) -> Vec<Action> {
         self.history.to_vec()
     }
 
-    pub fn action(&mut self, operation: String, param: i128) -> i128 {
-        match operation.as_str() {
-            "add" => {
-                self.value += param;
-            }
-            "sub" => {
-                self.value -= param;
-            }
-            _ => {
-                env::panic(b"unsupported operation");
-            }
-        }
-        self.history.push(&Action { user: env::signer_account_id(), operation, param });
-        self.value
-    }
-
-    pub fn inc(&mut self) {
-        self.value += 1;
-    }
-
-    pub fn dec(&mut self) {
-        self.value -= 1;
-    }
-
-    pub fn reset(&mut self) {
-        self.value = 0;
+    pub fn add_history(&mut self) {
+        self.history.push(&Action { user: env::signer_account_id(), operation: "add".to_string(), param: 9 });
     }
 }
-
-
