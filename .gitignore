@@ -1,5 +1,8 @@
 .idea
 target/
+node_modules/
+.cache/
+dist/
 *.wasm
 /tmp
 

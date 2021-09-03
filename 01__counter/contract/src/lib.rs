@@ -5,25 +5,30 @@ use near_sdk::serde::{Deserialize, Serialize};
 
 near_sdk::setup_alloc!();
 
-#[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize)]
-pub struct Contract {
-    value: i128,
-    history: Vector<Action>,
-}
-
-impl Default for Contract {
-    fn default() -> Self {
-        Self { value: 0, history: Vector::new(b"h") }
-    }
-}
-
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize, Debug, Default)]
 #[serde(crate = "near_sdk::serde")]
 pub struct Action {
     user: AccountId,
     operation: String,
     param: i128,
+    timestamp: u64,
+}
+
+#[near_bindgen]
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct Contract {
+    value: i128,
+    history: Vector<Action>,
+
+}
+
+impl Default for Contract {
+    fn default() -> Self {
+        Self {
+            value: 0,
+            history: Vector::new(b"h"),
+        }
+    }
 }
 
 #[near_bindgen]
@@ -48,21 +53,17 @@ impl Contract {
                 env::panic(b"unsupported operation");
             }
         }
-        self.history.push(&Action { user: env::signer_account_id(), operation, param });
+        self.history.push(&Action {
+            user: env::signer_account_id(),
+            operation,
+            param,
+            timestamp: env::block_timestamp()
+        });
         self.value
-    }
-
-    pub fn inc(&mut self) {
-        self.value += 1;
-    }
-
-    pub fn dec(&mut self) {
-        self.value -= 1;
     }
 
     pub fn reset(&mut self) {
         self.value = 0;
+        self.history.clear();
     }
 }
-
-

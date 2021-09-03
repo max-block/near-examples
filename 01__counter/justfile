@@ -2,6 +2,15 @@ set positional-arguments
 
 contract := `cat contract/neardev/dev-account`
 
+
+test1 param:
+    echo '{"pass-param": $1}'
+    echo \'$1\'
+
+test2 param:
+    echo {"pass-param": $1}
+    echo $1
+
 build-contract:
     cd contract && cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/counter.wasm ./out/main.wasm
 
@@ -17,8 +26,8 @@ get_value:
 get_history:
     cd contract && near view {{contract}} get_history
 
-inc param:
-    cd contract && near call {{contract}} action '{"operation": "add", "param": 3}' --accountId {{contract}}
+inc:
+    cd contract && near call {{contract}} action --args '{"operation": "add", "param": 11}' --accountId {{contract}}
 
 dec:
-    cd contract && near call {{contract}} dec --accountId {{contract}}
+    cd contract && near call {{contract}} action '{"operation": "sub", "param": 3}' --accountId {{contract}}
