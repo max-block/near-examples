@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>near / counter</title>
+</head>
+<body>
+<h1>near counter / rust</h1>
+
+
+<section>
+    <h2>welcome</h2>
+    <div id="account"></div>
+    <button onclick="main.login()" id="login">login</button>
+    <button onclick="main.logout()" id="logout">logout</button>
+</section><hr>
+
+
+<section>
+    <h2>send action</h2>
+    <select id="operation">
+        <option value="add">add</option>
+        <option value="sub">sub</option>
+    </select>
+    <input type="number" id="param" placeholder="param" value="3">
+    <button onclick="main.sendAction()">submit</button>
+</section><br>
+
+
+<section>
+    <h2>send reset</h2>
+    <input id="resetPayValue" placeholder="pay NEAR" value="0.5">
+    <button onclick="main.sendReset()">submit</button>
+</section><hr>
+
+
+<section>
+    <h2>value</h2>
+    <div id="value"></div>
+</section><hr>
+
+<section>
+    <h2>history</h2>
+    <pre id="history"></pre>
+</section>
+
+<script src="./main.js"></script>
+</body>
+</html>

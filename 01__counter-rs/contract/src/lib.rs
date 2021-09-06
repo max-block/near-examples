@@ -33,11 +33,12 @@ impl Default for Contract {
 
 #[near_bindgen]
 impl Contract {
-    pub fn get_value(&self) -> i128 {
+    pub fn value(&self) -> i128 {
         self.value
     }
 
-    pub fn get_history(&self) -> Vec<Action> {
+    pub fn history(&self) -> Vec
+    <Action> {
         self.history.to_vec()
     }
 
@@ -62,7 +63,13 @@ impl Contract {
         self.value
     }
 
+    #[payable]
+    // You can reset only if you pay 0.5 NEAR
     pub fn reset(&mut self) {
+        env::log(format!("reset for {}", env::attached_deposit()).as_bytes());
+        if env::attached_deposit() < 500000000000000000000000 {
+            env::panic(b"Pay at least 0.5 NEAR for this action.")
+        }
         self.value = 0;
         self.history.clear();
     }
