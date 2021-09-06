@@ -1,0 +1,28 @@
+set positional-arguments
+
+contract := `cat neardev/dev-account`
+
+
+build:
+    yarn build
+
+deploy: build
+    near dev-deploy
+
+deploy-force: build
+    near dev-deploy --force
+
+value:
+    near view {{contract}} value
+
+history:
+    near view {{contract}} history
+
+inc:
+    near call {{contract}} action --args '{"operation": "add", "param": 11}' --accountId {{contract}}
+
+dec:
+    near call {{contract}} action '{"operation": "sub", "param": 3}' --accountId {{contract}}
+
+reset:
+    near call {{contract}} reset '{}' --deposit 0.7 --accountId {{contract}}

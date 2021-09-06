@@ -1,0 +1,15 @@
+{
+  "name": "contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "asb"
+  },
+  "keywords": [],
+  "author": "Max Block",
+  "license": "ISC",
+  "dependencies": {
+    "near-sdk-as": "^3.2.3"
+  }
+}
