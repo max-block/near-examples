@@ -1,0 +1,27 @@
+set positional-arguments
+
+contract := `cat neardev/dev-account`
+
+
+
+build:
+    cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/nft.wasm ./out/main.wasm
+
+deploy: build
+    near dev-deploy
+
+deploy-force: build
+    near dev-deploy --force
+
+init:
+    near call {{contract}} new '{"owner_id": "'{{contract}}'"}' --accountId {{contract}}
+
+meta:
+    near view {{contract}} nft_metadata
+
+mint:
+    near call {{contract}} nft_mint '{"token_id": "1", "token_owner_id": "'{{contract}}'", "token_metadata": { "title": "title 1", "description": "bla bla bla", "copies": 1}}' --accountId {{contract}} --deposit 0.1
+
+transfer:
+    near call {{contract}} nft_transfer '{"token_id": "1", "receiver_id": "maxblock.testnet", "memo": "transfer ownership"}' --accountId {{contract}} --deposit 0.000000000000000000000001
+
