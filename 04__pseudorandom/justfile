@@ -1,0 +1,18 @@
+set positional-arguments
+
+contract := `cat neardev/dev-account`
+
+
+
+build:
+    cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/pseudorandom.wasm ./out/main.wasm
+
+deploy: build
+    near dev-deploy
+
+deploy-force: build
+    near dev-deploy --force
+
+
+test:
+    cargo test -- --nocapture
