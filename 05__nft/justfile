@@ -14,7 +14,7 @@ deploy-force: build
     near dev-deploy --force
 
 init:
-    near call {{contract}} new '{"owner_id": "'{{contract}}'"}' --accountId {{contract}}
+    near call {{contract}} new '{"owner_id": "'{{contract}}'"}' --accountId t1.maxblock.testnet
 
 meta:
     near view {{contract}} nft_metadata

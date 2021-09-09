@@ -1,0 +1,23 @@
+set positional-arguments
+
+contract := `cat neardev/dev-account`
+
+
+
+build:
+    cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/contract.wasm ./out/main.wasm
+
+deploy: build
+    near dev-deploy
+
+deploy-force: build
+    near dev-deploy --force
+
+deposit:
+    near call {{contract}} deposit --accountId t1.maxblock.testnet --deposit 1
+
+send:
+    near call {{contract}} send --args '{"amount": "100000000000000000000000", "recipients": ["t1.maxblock.testnet", "t2.maxblock.testnet"]}' --accountId maxblock.testnet
+
+inc:
+    near call {{contract}} action --args '{"operation": "add", "param": 11}' --accountId {{contract}}
