@@ -1,0 +1,29 @@
+set positional-arguments
+
+counter_contract := `cat counter/neardev/dev-account`
+wrapper_contract := `cat counter/neardev/dev-account`
+
+
+build-counter:
+    cd counter && cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/counter.wasm ./out/main.wasm
+
+deploy-counter: build-counter
+    cd counter && near dev-deploy
+
+deploy-force-counter:
+    cd counter && near dev-deploy --force
+
+value-counter:
+    near view {{counter_contract}} value
+
+history-counter:
+    near view {{counter_contract}} history
+
+inc-counter:
+    near call {{counter_contract}} action --args '{"operation": "add", "param": 11}' --accountId {{counter_contract}}
+
+dec-counter:
+    near call {{counter_contract}} action '{"operation": "sub", "param": 3}' --accountId {{counter_contract}}
+
+reset-counter:
+    near call {{counter_contract}} reset '{}' --deposit 0.1 --accountId {{counter_contract}}
