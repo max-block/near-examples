@@ -1,5 +1,5 @@
-use near_sdk::{env, near_bindgen};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::{env, near_bindgen};
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, Default)]
@@ -9,7 +9,7 @@ pub struct Contract {}
 impl Contract {
     // TODO: doesn't work, why???
     pub fn random_seed(&self) -> Vec<u8> {
-        env::random_seed().clone()
+        env::random_seed()
     }
 
     // TODO: doesn't work, why???
@@ -30,9 +30,9 @@ impl Contract {
 
 #[cfg(test)]
 mod tests {
-    use near_sdk::MockedBlockchain;
     use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::testing_env;
+    use near_sdk::MockedBlockchain;
 
     use super::Contract;
 
@@ -47,9 +47,6 @@ mod tests {
         let contract = Contract {};
         println!("random_seed: {:?}", contract.random_seed());
         println!("random_int: {}", contract.random_int(777));
-        println!(
-            "random_by_timestamp_and_block: {}",
-            contract.random_by_timestamp_and_block(777)
-        );
+        println!("random_by_timestamp_and_block: {}", contract.random_by_timestamp_and_block(777));
     }
 }

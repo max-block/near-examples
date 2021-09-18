@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "asb"
+    "build": "contract/node_modules/.bin/asb"
   },
   "keywords": [],
   "author": "Max Block",

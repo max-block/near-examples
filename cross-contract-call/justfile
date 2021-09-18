@@ -22,19 +22,19 @@ deploy-force-counter: build-counter
 deploy-force-wrapper: build-wrapper
     cd wrapper && near dev-deploy --force
 
-value-counter:
+value:
     near view {{counter_contract}} value
 
-history-counter:
+history:
     near view {{counter_contract}} history
 
-inc-counter:
+add:
     near call {{counter_contract}} action --args '{"operation": "add", "param": 1}' --accountId {{counter_contract}}
 
-dec-counter:
+sub:
     near call {{counter_contract}} action '{"operation": "sub", "param": 3}' --accountId {{counter_contract}}
 
-reset-counter:
+reset:
     near call {{counter_contract}} reset '{}' --deposit 0.1 --accountId {{counter_contract}}
 
 init-wrapper:

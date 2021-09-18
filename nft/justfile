@@ -3,7 +3,6 @@ set positional-arguments
 contract := `cat neardev/dev-account`
 
 
-
 build:
     cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/nft.wasm ./out/main.wasm
 
@@ -14,7 +13,7 @@ deploy-force: build
     near dev-deploy --force
 
 init:
-    near call {{contract}} new '{"owner_id": "'{{contract}}'", "money_wallet": "maxblock.testnet", "name": "ZZZ Token", "symbol": "ZZZ", "price": "100000000000000000000000"}' --accountId {{contract}}
+    near call {{contract}} new '{"owner_id": "'{{contract}}'", "name": "ZZZ Token", "symbol": "ZZZ"}' --accountId {{contract}}
 
 meta:
     near view {{contract}} nft_metadata
@@ -25,11 +24,11 @@ mint_1:
 mint_2:
     near call {{contract}} mint_token '{"token_id": "2", "token_metadata": { "title": "title 2", "description": "bla bla 2", "copies": 1}}' --accountId {{contract}} --deposit 0.00597
 
+transfer_1:
+    near call {{contract}} nft_transfer '{"token_id": "1", "receiver_id": "t1.maxblock.testnet"}' --accountId {{contract}} --depositYocto 1
+
+transfer_2:
+    near call {{contract}} nft_transfer '{"token_id": "1", "receiver_id": "t2.maxblock.testnet"}' --accountId t1.maxblock.testnet --depositYocto 1
+
 token_1:
     near view {{contract}} nft_token '{"token_id": "1"}'
-
-token_2:
-    near view {{contract}} nft_token '{"token_id": "2"}'
-
-buy_1:
-    near call {{contract}} buy_token '{"token_id": "1"}' --accountId t1.maxblock.testnet --deposit 0.11

@@ -5,9 +5,7 @@ use near_contract_standards::non_fungible_token::metadata::{
     NFT_METADATA_SPEC, NFTContractMetadata, NonFungibleTokenMetadataProvider, TokenMetadata,
 };
 use near_contract_standards::non_fungible_token::NonFungibleToken;
-use near_sdk::{
-    AccountId, BorshStorageKey, env, near_bindgen, PanicOnDefault, Promise, PromiseOrValue,
-};
+use near_sdk::{AccountId, BorshStorageKey, env, near_bindgen, PanicOnDefault, Promise, PromiseOrValue};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::LazyOption;
 use near_sdk::json_types::ValidAccountId;
@@ -21,8 +19,6 @@ near_sdk::setup_alloc!();
 pub struct Contract {
     tokens: NonFungibleToken,
     metadata: LazyOption<NFTContractMetadata>,
-    money_wallet: ValidAccountId,
-    price: u128,
 }
 
 #[derive(BorshSerialize, BorshStorageKey)]
@@ -37,13 +33,7 @@ enum StorageKey {
 #[near_bindgen]
 impl Contract {
     #[init]
-    pub fn new(
-        owner_id: ValidAccountId,
-        money_wallet: ValidAccountId,
-        name: String,
-        symbol: String,
-        price: U128,
-    ) -> Self {
+    pub fn new(owner_id: ValidAccountId, name: String, symbol: String) -> Self {
         let metadata = NFTContractMetadata {
             spec: NFT_METADATA_SPEC.to_string(),
             name,
@@ -64,30 +54,12 @@ impl Contract {
                 Some(StorageKey::Approval),
             ),
             metadata: LazyOption::new(StorageKey::Metadata, Some(&metadata)),
-            money_wallet,
-            price: price.0,
         }
     }
 
     #[payable]
     pub fn mint_token(&mut self, token_id: TokenId, token_metadata: TokenMetadata) -> Token {
-        self.tokens.mint(
-            token_id,
-            ValidAccountId::try_from(env::current_account_id()).unwrap(),
-            Some(token_metadata),
-        )
-    }
-
-    #[payable]
-    pub fn buy_token(&mut self, token_id: TokenId) {
-        if env::attached_deposit() < self.price {
-            env::panic(b"deposit < price");
-        }
-        Promise::new(AccountId::from(self.money_wallet.clone())).transfer(self.price);
-        if env::attached_deposit() > self.price {
-            Promise::new(env::signer_account_id()).transfer(env::attached_deposit() - self.price);
-        }
-        self.nft_transfer(ValidAccountId::try_from(env::signer_account_id()).unwrap(), token_id, None, None);
+        self.tokens.mint(token_id, ValidAccountId::try_from(env::current_account_id()).unwrap(), Some(token_metadata))
     }
 }
 

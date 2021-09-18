@@ -18,6 +18,3 @@ deposit:
 
 send:
     near call {{contract}} send --args '{"amount": "100000000000000000000000", "recipients": ["t1.maxblock.testnet", "t2.maxblock.testnet"]}' --accountId maxblock.testnet
-
-inc:
-    near call {{contract}} action --args '{"operation": "add", "param": 11}' --accountId {{contract}}

@@ -1,7 +1,7 @@
-use near_sdk::{AccountId, env, near_bindgen};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::Vector;
 use near_sdk::serde::{Deserialize, Serialize};
+use near_sdk::{env, near_bindgen, AccountId};
 
 near_sdk::setup_alloc!();
 
@@ -19,15 +19,11 @@ pub struct Action {
 pub struct Contract {
     value: i128,
     history: Vector<Action>,
-
 }
 
 impl Default for Contract {
     fn default() -> Self {
-        Self {
-            value: 0,
-            history: Vector::new(b"h"),
-        }
+        Self { value: 0, history: Vector::new(b"h") }
     }
 }
 
@@ -37,8 +33,7 @@ impl Contract {
         self.value
     }
 
-    pub fn history(&self) -> Vec
-    <Action> {
+    pub fn history(&self) -> Vec<Action> {
         self.history.to_vec()
     }
 
@@ -59,7 +54,7 @@ impl Contract {
             user: env::signer_account_id(),
             operation,
             param,
-            timestamp: env::block_timestamp()
+            timestamp: env::block_timestamp(),
         });
         self.value
     }

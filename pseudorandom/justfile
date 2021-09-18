@@ -13,6 +13,15 @@ deploy: build
 deploy-force: build
     near dev-deploy --force
 
+random_seed:
+    near view {{contract}} random_seed
+
+random_int:
+    near view {{contract}} random_int
+
+random_by_timestamp_and_block max:
+    near view {{contract}} random_by_timestamp_and_block '{"max": 10}'
+
 
 test:
     cargo test -- --nocapture
