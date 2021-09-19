@@ -30,5 +30,5 @@ transfer_1:
 transfer_2:
     near call {{contract}} nft_transfer '{"token_id": "1", "receiver_id": "t2.maxblock.testnet"}' --accountId t1.maxblock.testnet --depositYocto 1
 
-token_1:
-    near view {{contract}} nft_token '{"token_id": "1"}'
+token id:
+    near view {{contract}} nft_token '{"token_id": "'$1'"}'

@@ -19,11 +19,11 @@ value:
 history:
     near view {{contract}} history
 
-add:
-    near call {{contract}} action --args '{"operation": "add", "param": 11}' --accountId {{contract}}
+add value:
+    near call {{contract}} action --args '{"operation": "add", "param": '$1'}' --accountId {{contract}}
 
-sub:
-    near call {{contract}} action '{"operation": "sub", "param": 3}' --accountId {{contract}}
+sub value:
+    near call {{contract}} action '{"operation": "sub", "param": '$1'}' --accountId {{contract}}
 
 reset:
     near call {{contract}} reset '{}' --deposit 0.1 --accountId {{contract}}
